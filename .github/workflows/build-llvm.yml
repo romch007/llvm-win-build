@@ -1,0 +1,23 @@
+name: Build LLVM
+
+on:
+  workflow_dispatch: {}  # Manual trigger
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build LLVM
+        run: |
+          ./build.ps1
+        shell: pwsh
+
+      - name: Upload LLVM zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: llvm-windows-release
+          path: LLVM.zip
