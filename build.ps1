@@ -44,7 +44,7 @@ $LLVMDir = Join-Path $SourceDir "llvm"
 cmake `
     -G $CMakeGenerator -Thost=x64 -B $BuildDir -S $LLVMDir `
     -DCMAKE_BUILD_TYPE=Release `
-    -DCMAKE_INSTALL_PREFIX=$InstallDir `
+    -DCMAKE_INSTALL_PREFIX="$InstallDir" `
     -DLLVM_ENABLE_PROJECTS="$LLVMProjects" `
     -DLLVM_TARGETS_TO_BUILD="$LLVMTargets" `
     "$SourceDir\llvm"

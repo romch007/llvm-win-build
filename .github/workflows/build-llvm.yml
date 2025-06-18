@@ -21,3 +21,4 @@ jobs:
         with:
           name: llvm-windows-release
           path: LLVM.zip
+          if-no-files-found: error
