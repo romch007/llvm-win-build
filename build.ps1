@@ -22,7 +22,7 @@ $OutputFile = Join-Path $BaseDir "LLVM.zip"
 
 $CMakeGenerator = "Visual Studio 17 2022"
 
-$Version = "20.1.7"
+$Version = "21.1.5"
 $LLVMProjects = "clang;clang-tools-extra"
 $LLVMTargets = "X86;AArch64"
 
