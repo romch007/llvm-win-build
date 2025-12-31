@@ -18,7 +18,7 @@ jobs:
 
       - name: Build LLVM
         run: |
-          ./build.ps1 -Version "${{ github.ref_name }}" -Fake
+          ./build.ps1 -Version "${{ github.ref_name }}"
         shell: pwsh
 
       - name: Rename artifact
