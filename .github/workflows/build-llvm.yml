@@ -1,7 +1,12 @@
 name: Build LLVM
 
 on:
-  workflow_dispatch: {}  # Manual trigger
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -13,12 +18,18 @@ jobs:
 
       - name: Build LLVM
         run: |
-          ./build.ps1
+          ./build.ps1 -Version "${{ github.ref_name }}" -Fake
         shell: pwsh
 
-      - name: Upload LLVM zip artifact
-        uses: actions/upload-artifact@v4
+      - name: Rename artifact
+        shell: pwsh
+        run: |
+          $Version = "${{ github.ref_name }}"
+          $NewName = "LLVM-$Version-msvc-x64.zip"
+          Rename-Item -Path LLVM.zip -NewName $NewName
+
+      - name: Create GitHub Release and upload artifact
+        uses: softprops/action-gh-release@v2
         with:
-          name: llvm-windows-release
-          path: LLVM.zip
-          if-no-files-found: error
+          files: LLVM-${{ github.ref_name }}-msvc-x64.zip
+

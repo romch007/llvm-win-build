@@ -1,6 +1,9 @@
 [CmdletBinding()]
 param (
-    [switch]$VerboseOutput
+    [Parameter(Mandatory)]
+    [string]$Version,
+
+    [switch]$Fake
 )
 
 $ErrorActionPreference = 'Stop'
@@ -22,9 +25,16 @@ $OutputFile = Join-Path $BaseDir "LLVM.zip"
 
 $CMakeGenerator = "Visual Studio 17 2022"
 
-$Version = "21.1.7"
 $LLVMProjects = "clang;clang-tools-extra"
 $LLVMTargets = "X86;AArch64"
+
+if ($Fake) {
+  Step "Fake mode"
+  "Dummy LLVM $Version" | Out-File dummy.txt
+  Compress-Archive dummy.txt $OutputFile
+  Write-Host "Output is $OutputFile"
+  return
+}
 
 Step "Cloning LLVM $Version"
 if (Test-Path "$SourceDir") {
