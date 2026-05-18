@@ -16,9 +16,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup vcpkg
+        shell: pwsh
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+          C:\vcpkg\bootstrap-vcpkg.bat
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          C:\vcpkg\vcpkg.exe install zstd zlib libxml2
+
       - name: Build LLVM
         run: |
-          ./build.ps1 -Version "${{ github.ref_name }}"
+          ./build.ps1 -Version "${{ github.ref_name }}" -VcpkgPath "C:\vcpkg"
         shell: pwsh
 
       - name: Rename artifact
