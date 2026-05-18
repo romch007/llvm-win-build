@@ -25,8 +25,6 @@ $BuildDir = Join-Path $BaseDir "build"
 $InstallDir = Join-Path $BaseDir "install"
 $OutputFile = Join-Path $BaseDir "LLVM.zip"
 
-$CMakeGenerator = "Visual Studio 17 2022"
-
 $LLVMProjects = "clang;clang-tools-extra"
 $LLVMTargets = "X86;AArch64"
 
@@ -54,7 +52,6 @@ New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 $LLVMDir = Join-Path $SourceDir "llvm"
 
 $CMakeArgs = @(
-  "-G", $CMakeGenerator,
   "-Thost=x64",
   "-B", $BuildDir,
   "-S", $LLVMDir,
