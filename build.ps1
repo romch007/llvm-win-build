@@ -3,8 +3,6 @@ param (
     [Parameter(Mandatory)]
     [string]$Version,
 
-    [string]$VcpkgPath,
-
     [switch]$Fake
 )
 
@@ -29,11 +27,11 @@ $LLVMProjects = "clang;clang-tools-extra"
 $LLVMTargets = "X86;AArch64"
 
 if ($Fake) {
-  Step "Fake mode"
-  "Dummy LLVM $Version" | Out-File dummy.txt
-  Compress-Archive dummy.txt $OutputFile
-  Write-Host "Output is $OutputFile"
-  return
+    Step "Fake mode"
+    "Dummy LLVM $Version" | Out-File dummy.txt
+    Compress-Archive dummy.txt $OutputFile
+    Write-Host "Output is $OutputFile"
+    return
 }
 
 Step "Cloning LLVM $Version"
@@ -52,19 +50,14 @@ New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 $LLVMDir = Join-Path $SourceDir "llvm"
 
 $CMakeArgs = @(
-  "-Thost=x64",
-  "-B", $BuildDir,
-  "-S", $LLVMDir,
-  "-DCMAKE_BUILD_TYPE=Release",
-  "-DCMAKE_INSTALL_PREFIX=$InstallDir",
-  "-DLLVM_ENABLE_PROJECTS=$LLVMProjects",
-  "-DLLVM_TARGETS_TO_BUILD=$LLVMTargets"
+    "-Thost=x64",
+    "-B", $BuildDir,
+    "-S", $LLVMDir,
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCMAKE_INSTALL_PREFIX=$InstallDir",
+    "-DLLVM_ENABLE_PROJECTS=$LLVMProjects",
+    "-DLLVM_TARGETS_TO_BUILD=$LLVMTargets"
 )
-
-if ($VcpkgPath) {
-  $ToolchainFile = Join-Path $VcpkgPath "scripts/buildsystems/vcpkg.cmake"
-  $CmakeArgs += "-DCMAKE_TOOLCHAIN_FILE=$ToolchainFile"
-}
 
 cmake @CMakeArgs
 
