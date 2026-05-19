@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Build LLVM
         run: |
@@ -29,7 +29,7 @@ jobs:
           Rename-Item -Path LLVM.zip -NewName $NewName
 
       - name: Create GitHub Release and upload artifact
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: LLVM-${{ github.ref_name }}-msvc-x64.zip
 
